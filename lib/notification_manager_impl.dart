@@ -15,10 +15,12 @@ class NotificationManagerImpl implements NotificationManager {
   final FlutterLocalNotificationsPlugin notificationClient;
   final NotificationNavigation notificationNavigation;
   VoidCallback? notificationRead;
+  NotificationPayload Function(Map<String, dynamic>) getNotificationPayload;
 
   NotificationManagerImpl({
     required this.notificationClient,
     required this.notificationNavigation,
+    required this.getNotificationPayload,
   }) {
     _init();
   }
@@ -132,9 +134,7 @@ class NotificationManagerImpl implements NotificationManager {
 
   NotificationPayload _getNotificationPayload(Map<String, dynamic> message) {
     log(message.toString());
-
-    final type = message['type'];
-    return NoDataPayload();
+    return getNotificationPayload(message);
   }
 
   @override

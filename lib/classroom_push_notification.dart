@@ -3,6 +3,7 @@ library classroom_push_notification;
 import 'package:classroom_push_notification/notification_manager.dart';
 import 'package:classroom_push_notification/notification_manager_impl.dart';
 import 'package:classroom_push_notification/notification_navigation.dart';
+import 'package:classroom_push_notification/notification_payload.dart';
 import 'package:classroom_push_notification/push_notification_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -17,10 +18,13 @@ class ClassroomPushNotification {
   ClassroomPushNotification._internal({
     required this.firebaseApp,
     required this.nav,
+    required NotificationPayload Function(Map<String, dynamic>)
+        getNotificationPayload,
   }) {
     _manager = NotificationManagerImpl(
       notificationClient: FlutterLocalNotificationsPlugin(),
       notificationNavigation: nav,
+      getNotificationPayload: getNotificationPayload,
     );
     pushNotification = PushNotificationServiceImpl(
       _manager,
@@ -29,9 +33,15 @@ class ClassroomPushNotification {
   }
 
   static ClassroomPushNotification initialize(
-      FirebaseApp firebaseApp, NotificationNavigation nav) {
-    _instance =
-        ClassroomPushNotification._internal(firebaseApp: firebaseApp, nav: nav);
+    FirebaseApp firebaseApp,
+    NotificationNavigation nav,
+    NotificationPayload Function(Map<String, dynamic>) getNotificationPayload,
+  ) {
+    _instance = ClassroomPushNotification._internal(
+      firebaseApp: firebaseApp,
+      nav: nav,
+      getNotificationPayload: getNotificationPayload,
+    );
     return _instance;
   }
 
