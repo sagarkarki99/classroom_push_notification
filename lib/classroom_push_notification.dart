@@ -1,10 +1,11 @@
 library classroom_push_notification;
 
-import 'package:classroom_push_notification/notification_manager.dart';
-import 'package:classroom_push_notification/notification_manager_impl.dart';
-import 'package:classroom_push_notification/notification_navigation.dart';
-import 'package:classroom_push_notification/notification_payload.dart';
-import 'package:classroom_push_notification/push_notification_service.dart';
+import 'package:classroom_push_notification/notification_manager/notification_manager.dart';
+import 'package:classroom_push_notification/notification_manager/notification_manager_impl.dart';
+import 'package:classroom_push_notification/others/notification_navigation.dart';
+import 'package:classroom_push_notification/others/notification_payload.dart';
+import 'package:classroom_push_notification/push_notification/push_notification_service.dart';
+import 'package:classroom_push_notification/push_notification/push_notification_service_impl.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 

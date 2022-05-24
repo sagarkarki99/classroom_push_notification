@@ -1,21 +1,8 @@
 import 'dart:io';
 
-import 'package:classroom_push_notification/notification_manager.dart';
+import 'package:classroom_push_notification/notification_manager/notification_manager.dart';
+import 'package:classroom_push_notification/push_notification/push_notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-
-abstract class PushNotificationService {
-  ///activate remote push notification service when user is authenticated
-  Future<void> activate({
-    required void Function(String) onRead,
-    required void Function(String?) onActivated,
-  });
-
-  ///deactivate remote push notification service when user is unauthenticated
-  Future<void> deactivate({required Function(String) onDeactivated});
-
-  /// a listener which listens to changes when a push notification arrives when app is active state.
-  void listen(Function(Map<String, dynamic>) callback);
-}
 
 class PushNotificationServiceImpl implements PushNotificationService {
   final NotificationManager notificationManager;

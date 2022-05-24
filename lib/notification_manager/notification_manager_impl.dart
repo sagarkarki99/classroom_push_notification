@@ -1,12 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:classroom_push_notification/notification_payload.dart';
+import 'package:classroom_push_notification/others/notification_navigation.dart';
+import 'package:classroom_push_notification/others/notification_payload.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import 'notification_manager.dart';
-import 'notification_navigation.dart';
 
 Map<String, dynamic> _foregroundMessage = {};
 late Function(String) _onNotificationClick;
