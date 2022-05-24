@@ -58,7 +58,15 @@ class ClassroomPushNotification {
     );
   }
 
-  Future<void> deactivate() async {
-    await pushNotification.deactivate();
+  Future<void> deactivate({
+    required void Function(String?) onDeactivated,
+  }) async {
+    await pushNotification.deactivate(
+      onDeactivated: onDeactivated,
+    );
+  }
+
+  void listen(Function(Map<String, dynamic>) callback) {
+    pushNotification.listen(callback);
   }
 }

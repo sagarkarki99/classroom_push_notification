@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:classroom_push_notification/notification_manager.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 
 abstract class PushNotificationService {
   ///activate remote push notification service when user is authenticated
@@ -12,10 +11,10 @@ abstract class PushNotificationService {
   });
 
   ///deactivate remote push notification service when user is unauthenticated
-  Future<void> deactivate();
+  Future<void> deactivate({required Function(String) onDeactivated});
 
   /// a listener which listens to changes when a push notification arrives when app is active state.
-  void onNotificationReceived(VoidCallback onNotificationCountIncreased);
+  void listen(Function(Map<String, dynamic>) callback);
 }
 
 class PushNotificationServiceImpl implements PushNotificationService {
@@ -23,6 +22,7 @@ class PushNotificationServiceImpl implements PushNotificationService {
   final String? previousToken;
 
   late Function(String) _onReadNotification;
+  final List<Function(Map<String, dynamic>)> _listeners = [];
 
   PushNotificationServiceImpl(
     this.notificationManager,
@@ -54,6 +54,7 @@ class PushNotificationServiceImpl implements PushNotificationService {
 
     //while app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      _notifyListeners(message.data);
       notificationManager.displayPopup(
         message.notification?.title ?? '',
         message.notification?.body ?? '',
@@ -69,14 +70,15 @@ class PushNotificationServiceImpl implements PushNotificationService {
   }
 
   @override
-  Future<void> deactivate() {
-    // TODO: implement deactivate
-    throw UnimplementedError();
+  Future<void> deactivate({required Function(String) onDeactivated}) async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    await FirebaseMessaging.instance.deleteToken();
+    onDeactivated(fcmToken ?? '');
   }
 
   @override
-  void onNotificationReceived(VoidCallback onNotificationCountIncreased) {
-    // TODO: implement onNotificationReceived
+  void listen(Function(Map<String, dynamic>) callback) {
+    _listeners.add(callback);
   }
 
   void _navigateToLocalNavigation(Map<String, dynamic> data) {
@@ -86,5 +88,11 @@ class PushNotificationServiceImpl implements PushNotificationService {
 
   void markNotificationAsRead(String messageId) {
     _onReadNotification(messageId);
+  }
+
+  void _notifyListeners(Map<String, dynamic> data) {
+    for (var listener in _listeners) {
+      listener(data);
+    }
   }
 }
