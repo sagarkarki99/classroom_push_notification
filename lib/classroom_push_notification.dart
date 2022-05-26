@@ -21,9 +21,11 @@ class ClassroomPushNotification {
     required this.nav,
     required NotificationPayload Function(Map<String, dynamic>)
         getNotificationPayload,
+    required String appIcon,
   }) {
     _manager = NotificationManagerImpl(
       notificationClient: FlutterLocalNotificationsPlugin(),
+      appIcon: appIcon,
       notificationNavigation: nav,
       getNotificationPayload: getNotificationPayload,
     );
@@ -36,12 +38,14 @@ class ClassroomPushNotification {
   static ClassroomPushNotification initialize(
     FirebaseApp firebaseApp,
     NotificationNavigation nav,
-    NotificationPayload Function(Map<String, dynamic>) getNotificationPayload,
-  ) {
+    NotificationPayload Function(Map<String, dynamic>) getNotificationPayload, {
+    required String appIcon,
+  }) {
     _instance = ClassroomPushNotification._internal(
       firebaseApp: firebaseApp,
       nav: nav,
       getNotificationPayload: getNotificationPayload,
+      appIcon: appIcon,
     );
     return _instance;
   }

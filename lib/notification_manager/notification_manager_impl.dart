@@ -16,11 +16,13 @@ class NotificationManagerImpl implements NotificationManager {
   final NotificationNavigation notificationNavigation;
   VoidCallback? notificationRead;
   NotificationPayload Function(Map<String, dynamic>) getNotificationPayload;
+  final String appIcon;
 
   NotificationManagerImpl({
     required this.notificationClient,
     required this.notificationNavigation,
     required this.getNotificationPayload,
+    required this.appIcon,
   }) {
     _init();
   }
@@ -63,7 +65,7 @@ class NotificationManagerImpl implements NotificationManager {
   }
 
   AndroidInitializationSettings _getAndroidSettings() =>
-      const AndroidInitializationSettings('app_icon');
+      AndroidInitializationSettings(appIcon);
 
   IOSInitializationSettings _getIosSettings() =>
       const IOSInitializationSettings();
